@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Evident​ ​Mobile</string>
+    <string name="api_url">http://api.wunderground.com/api/</string>
+    <string name="api_path">/conditions/q/GA/Alpharetta.json</string>
+    <string name="api_key">33b987c787500091</string>
+
+
+    <string name="retrieve_weather_text">Retrieving Weather Updates</string>
+    <string name="action_settings">Settings</string>
+</resources>
