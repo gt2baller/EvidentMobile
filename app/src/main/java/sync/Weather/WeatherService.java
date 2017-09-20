@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -44,32 +45,39 @@ public class WeatherService {
     private void UpdateUIWithData(WeatherObject _weatherObject){
         Activity activity = (Activity)mContext;
         if(activity != null){
-            if(_weatherObject.get_imageUrl() != null){
-                ImageView imageView = (ImageView)activity.findViewById(R.id.imageView);
-                imageView.setVisibility(View.VISIBLE);
-                Glide.with(mContext).load(_weatherObject.get_imageUrl()).into(imageView);
-            }
+            try{
+                if(_weatherObject.get_imageUrl() != null){
+                    ImageView imageView = (ImageView)activity.findViewById(R.id.imageView);
+                    imageView.setVisibility(View.VISIBLE);
+                    Glide.with(mContext).load(_weatherObject.get_imageUrl()).into(imageView);
+                }
 
-            TextView textViewFullName = (TextView)activity.findViewById(R.id.textViewFullName);
-            TextView textViewCountry = (TextView)activity.findViewById(R.id.textViewCountry);
-            TextView textViewZipCode = (TextView)activity.findViewById(R.id.textViewZipCode);
-            textViewFullName.setText(_weatherObject.get_displayLocationObject().get_fullname());
-            textViewCountry.setText(_weatherObject.get_displayLocationObject().get_country());
-            textViewZipCode.setText(_weatherObject.get_displayLocationObject().get_zip());
+                TextView textViewFullName = (TextView)activity.findViewById(R.id.textViewFullName);
+                TextView textViewCountry = (TextView)activity.findViewById(R.id.textViewCountry);
+                TextView textViewZipCode = (TextView)activity.findViewById(R.id.textViewZipCode);
+
+                textViewFullName.setText(_weatherObject.get_displayLocationObject().get_fullname());
+                textViewCountry.setText(_weatherObject.get_displayLocationObject().get_country());
+                textViewZipCode.setText(_weatherObject.get_displayLocationObject().get_zip());
+            }catch (Exception ex){
+                Log.e("ERROR", ex.getMessage(), ex);
+            }
         }
 
     }
 
     private class RetrieveFeedTask extends AsyncTask<Void, Void, String> {
-
+        Activity activity = (Activity)mContext;
+        String city = "Alpharetta";
         private Exception exception;
 
         protected void onPreExecute() {
-            Activity activity = (Activity)mContext;
             if(activity != null){
                 ProgressBar progressBar = (ProgressBar)activity.findViewById(R.id.progressBar);
                 ImageView imageView = (ImageView)activity.findViewById(R.id.imageView);
                 TextView textView = (TextView)activity.findViewById(R.id.textViewResults);
+                EditText editText = (EditText)activity.findViewById(R.id.editTextLocation);
+                city = editText.getText().toString();
                 progressBar.setVisibility(View.VISIBLE);
                 textView.setText("");
                 imageView.setVisibility(View.GONE);
@@ -84,7 +92,7 @@ public class WeatherService {
 
             try {
 
-                URL url = new URL(apiUrl + apiKey + apiPath);
+                URL url = new URL(apiUrl + apiKey + apiPath + city.trim() + ".json");
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 try {
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

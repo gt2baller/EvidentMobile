@@ -6,55 +6,72 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="sync.evidentmobile.WeatherActivity"
-    tools:showIn="@layout/activity_weather_underground">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/activity_weather">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
+        <EditText
+            android:id="@+id/editTextLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search_default_text"
+            android:hint="@string/search_box_hint_text"/>
+        <Button
+            android:id="@+id/queryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:layout_gravity="center"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone" />
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/imageView"/>
-
-        <TextView
+            android:layout_gravity="end"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:text="@string/search_button_text"/>
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/textViewFullName"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/textViewCountry"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/textViewZipCode"/>
+            android:layout_height="match_parent"
+            android:gravity="center">
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/imageView"/>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@+id/imageView"
+                    android:id="@+id/textViewFullName"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@+id/textViewFullName"
+                    android:id="@+id/textViewCountry"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@+id/textViewCountry"
+                    android:id="@+id/textViewZipCode"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/text_margin"
+                    android:layout_below="@+id/textViewZipCode"
+                    android:id="@+id/textViewResults"
+                    />
+            </RelativeLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:id="@+id/textViewResults"
-            />
-
-        </LinearLayout>
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
