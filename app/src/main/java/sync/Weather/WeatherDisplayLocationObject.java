@@ -6,7 +6,7 @@ import org.json.JSONObject;
 /**
  * Created by rbrow_000 on 9/20/2017.
  */
-public class DisplayLocationObject {
+public class WeatherDisplayLocationObject {
 
     private String _fullname;
     private String _city;
@@ -18,10 +18,10 @@ public class DisplayLocationObject {
     private double _longitude;
     private double _elevation;
 
-    public DisplayLocationObject(){
+    public WeatherDisplayLocationObject(){
 
     }
-    public DisplayLocationObject(JSONObject _object){
+    public WeatherDisplayLocationObject(JSONObject _object){
         try {
             _fullname = _object.getString("full");
             _city = _object.getString("city");

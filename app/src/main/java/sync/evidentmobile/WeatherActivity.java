@@ -125,6 +125,7 @@ public class WeatherActivity extends AppCompatActivity implements
             e.printStackTrace();
         }
         if (addresses.size() > 0){
+            ((EditText)findViewById(R.id.editTextLocation)).setText(addresses.get(0).getLocality());
             System.out.println(addresses.get(0).getLocality());
         }
 

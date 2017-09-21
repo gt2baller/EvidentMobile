@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 import sync.evidentmobile.R;
 
@@ -52,13 +54,20 @@ public class WeatherService {
                     Glide.with(mContext).load(_weatherObject.get_imageUrl()).into(imageView);
                 }
 
+                ListView listView = (ListView)activity.findViewById(R.id.listViewItems);
+                WeatherObjectAdapter weatherObjectAdapter = new WeatherObjectAdapter(activity, R.id.listViewItems, _weatherObject.get_itemArrayList());
+                listView.setAdapter(weatherObjectAdapter);
+
                 TextView textViewFullName = (TextView)activity.findViewById(R.id.textViewFullName);
                 TextView textViewCountry = (TextView)activity.findViewById(R.id.textViewCountry);
                 TextView textViewZipCode = (TextView)activity.findViewById(R.id.textViewZipCode);
 
-                textViewFullName.setText(_weatherObject.get_displayLocationObject().get_fullname());
-                textViewCountry.setText(_weatherObject.get_displayLocationObject().get_country());
-                textViewZipCode.setText(_weatherObject.get_displayLocationObject().get_zip());
+                textViewFullName.setText(_weatherObject.get_WeatherDisplayLocationObject().get_fullname());
+                textViewCountry.setText(_weatherObject.get_WeatherDisplayLocationObject().get_country());
+                textViewZipCode.setText(_weatherObject.get_WeatherDisplayLocationObject().get_zip());
+                textViewCountry.setVisibility(View.VISIBLE);
+                textViewZipCode.setVisibility(View.VISIBLE);
+                textViewFullName.setVisibility(View.VISIBLE);
             }catch (Exception ex){
                 Log.e("ERROR", ex.getMessage(), ex);
             }
@@ -68,19 +77,20 @@ public class WeatherService {
 
     private class RetrieveFeedTask extends AsyncTask<Void, Void, String> {
         Activity activity = (Activity)mContext;
-        String city = "Alpharetta";
+        String city;
         private Exception exception;
 
         protected void onPreExecute() {
             if(activity != null){
-                ProgressBar progressBar = (ProgressBar)activity.findViewById(R.id.progressBar);
-                ImageView imageView = (ImageView)activity.findViewById(R.id.imageView);
-                TextView textView = (TextView)activity.findViewById(R.id.textViewResults);
+                ((ProgressBar)activity.findViewById(R.id.progressBar)).setVisibility(View.VISIBLE);
+                ((ImageView)activity.findViewById(R.id.imageView)).setVisibility(View.GONE);
+                ((TextView)activity.findViewById(R.id.textViewFullName)).setVisibility(View.GONE);
+                ((TextView)activity.findViewById(R.id.textViewCountry)).setVisibility(View.GONE);
+                ((TextView)activity.findViewById(R.id.textViewZipCode)).setVisibility(View.GONE);
+                ((TextView)activity.findViewById(R.id.textViewResults)).setText("");
                 EditText editText = (EditText)activity.findViewById(R.id.editTextLocation);
+
                 city = editText.getText().toString();
-                progressBar.setVisibility(View.VISIBLE);
-                textView.setText("");
-                imageView.setVisibility(View.GONE);
             }
         }
 
@@ -118,13 +128,15 @@ public class WeatherService {
             if(response == null) {
                 response = "THERE WAS AN ERROR";
             }
-            try {
-                JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
-                WeatherObject weatherObject = new WeatherObject(object);
-                UpdateUIWithData(weatherObject);
+            else{
+                try {
+                    JSONObject object = (JSONObject) new JSONTokener(response).nextValue();
+                    WeatherObject weatherObject = new WeatherObject(object);
+                    UpdateUIWithData(weatherObject);
 
-            } catch (JSONException e) {
-                // Appropriate error handling code
+                } catch (JSONException e) {
+                    // Appropriate error handling code
+                }
             }
 
             Activity activity = (Activity)mContext;
